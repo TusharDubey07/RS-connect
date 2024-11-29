@@ -189,24 +189,24 @@ export default function AnalyticsDashboard() {
 
 
           {/* Content Grid for Charts */}
-          <div className="flex  flex-row gap-6">
-            <div className="md:col-span-2">
+          <div className="flex  flex-row gap-6 ">
+            <div className="md:col-span-2 border border-[#318459] rounded-lg">
               <EngagementChart data={engagementData} />
             </div>
-            <div>
+            <div className='border border-[#318459] rounded-lg'>
               <RadarChartComponent data={radarData} />
             </div>
           </div>
 
           {/* Additional Charts in a Row */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="border border-[#318459] rounded-lg">
+            <div className="border border-[#318459] rounded-lg ">
               <SatisfactionChart />
             </div>
-            <div className="border border-[#318459] rounded-lg">
+            <div className="border border-[#318459] rounded-lg ">
               <BarChartComponent data={barData} />
             </div>
-            <div className="border border-[#318459] rounded-lg">
+            <div className="border border-[#318459] rounded-lg ">
               <AreaChartComponent data={areaData} />
             </div>
           </div>

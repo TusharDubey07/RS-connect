@@ -12,7 +12,7 @@ import { Share2 } from 'lucide-react';
 
 export function EngagementChart({ data }) {
   return (
-    <div className="col-span-full bg-white rounded-lg shadow-md p-6 w-[800px] h-[280px]">
+    <div className="col-span-full bg-white rounded-lg shadow-md p-6 w-[900px] h-[280px]">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-lg font-medium">Employee Engagement Rate</h2>
         <div className="flex items-center gap-4">

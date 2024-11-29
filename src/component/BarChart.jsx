@@ -12,8 +12,8 @@ import { MoreHorizontal, Share2 } from 'lucide-react';
 
 export function BarChartComponent({ data }) {
   return (
-    <div className="bg-white rounded-lg shadow-md p-6">
-      <div className="flex justify-between items-center mb-6">
+    <div className="bg-white rounded-lg shadow-md p-6  h-[350px]">
+      <div className="flex justify-between items-center mb-4">
         <h2 className="text-lg font-medium">Lorem Ipsum</h2>
         <div className="flex gap-2">
           <button className="p-2 hover:bg-gray-100 rounded-lg">

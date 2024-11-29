@@ -101,13 +101,14 @@ export default function Patient() {
 
           {/* Content Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-2">
+            <div className="lg:col-span-2 border border-[#318459] rounded-lg">
               <PatientList />
             </div>
-            <div className="space-y-4">
+            <div className="space-y-4 ">
               {/* Donut Chart Card */}
               <StatsCard title="lorem">
-                <div className="relative aspect-square w-full max-w-[200px] mx-auto mb-4">
+                <div className="relative aspect-square w-full max-w-[200px] mx-auto mb-4 h-[250px]">
+                  
                   <svg viewBox="0 0 100 100" className="transform -rotate-90 w-full h-full">
                     <circle
                       cx="50"

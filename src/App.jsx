@@ -1,11 +1,9 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import viteLogo from '/vite.svg'
 import Patient from './pages/Patient'
 import PatientDetails from './pages/Patientdetails';
 import AnalyticsDashboard from './pages/AnalyticsDashboard';
 import Staff from './pages/Staff';
+import Staffdetails from './pages/Staffdetails';
 import './App.css'
 
 function App() {
@@ -18,6 +16,7 @@ function App() {
           <Route path="/patient-details" element={<PatientDetails />} />
           <Route path='/analytics' element={<AnalyticsDashboard/>} />
           <Route path='/staff' element={<Staff/>} />
+          <Route path='/staff-details' element={<Staffdetails/>} />
         </Routes>
       </main>
   </Router>

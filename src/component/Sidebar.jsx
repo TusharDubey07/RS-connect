@@ -36,10 +36,10 @@ export function Sidebar() {
       </div>
 
       {/* Sidebar Content */}
-      <div style={{ padding: "8px", flex: 1, paddingTop: "70px" }}>
+      <div style={{ padding: "8px", flex: 1, paddingTop: "90px" }}>
         <div style={{ display: "flex", flexDirection: "column", gap: "50px" }}>
           {menuItems.map((item) => (
-            <div key={item.label} style={{ display: "flex", justifyContent: "center" }}>
+            <div key={item.label} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "8px" }}>
               <button
                 onClick={() => handleNavigation(item.path)}
                 style={{
@@ -47,10 +47,8 @@ export function Sidebar() {
                   height: "48px",
                   borderRadius: "50%",
                   display: "flex",
-                  flexDirection: "column",
                   alignItems: "center",
                   justifyContent: "center",
-                  gap: "4px",
                   backgroundColor: location.pathname === item.path ? "#10B981" : "transparent",
                   color: location.pathname === item.path ? "white" : "rgba(255, 255, 255, 0.6)",
                   border: "none",
@@ -67,8 +65,14 @@ export function Sidebar() {
                 }
               >
                 <item.icon style={{ width: "20px", height: "20px" }} />
-                <span style={{ fontSize: "10px", fontWeight: "500" }}>{item.label}</span>
               </button>
+              <span style={{ 
+                fontSize: "12px", 
+                fontWeight: "500",
+                color: location.pathname === item.path ? "white" : "rgba(255, 255, 255, 0.6)",
+              }}>
+                {item.label}
+              </span>
             </div>
           ))}
         </div>

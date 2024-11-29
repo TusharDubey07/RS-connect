@@ -3,8 +3,8 @@ import { MoreHorizontal, Share2 } from 'lucide-react';
 
 export function SatisfactionChart() {
   return (
-    <div className="bg-white rounded-lg shadow-md p-6">
-      <div className="flex justify-between items-center mb-6">
+    <div className="bg-white rounded-lg shadow-md p-6 h-[350px]">
+      <div className="flex justify-between items-center mb-4">
         <h2 className="text-lg font-medium">Patient Satisfaction</h2>
         <div className="flex gap-2">
           <button className="p-2 hover:bg-gray-100 rounded-lg">
@@ -15,7 +15,8 @@ export function SatisfactionChart() {
           </button>
         </div>
       </div>
-      <div className="relative aspect-square">
+      <div className="relative h-[180px] flex items-center justify-center">
+      <div className="w-[180px] h-[180px]"> 
         <svg viewBox="0 0 100 100" className="transform -rotate-90">
           <circle
             cx="50"
@@ -40,7 +41,8 @@ export function SatisfactionChart() {
           <span className="text-2xl font-semibold">78%</span>
         </div>
       </div>
-      <div className="mt-4 flex items-center gap-2">
+      </div>
+      <div className="mt-8 flex items-center gap-2">
         <div className="w-3 h-3 bg-emerald-500" />
         <span className="text-sm">Average running rate of employee</span>
       </div>

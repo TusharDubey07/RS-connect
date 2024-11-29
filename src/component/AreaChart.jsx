@@ -12,7 +12,7 @@ import { MoreHorizontal, Share2 } from 'lucide-react';
 
 export function AreaChartComponent({ data }) {
   return (
-    <div className="bg-white rounded-lg shadow-md p-6">
+    <div className="bg-white rounded-lg shadow-md p-6 h-[350px]">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-lg font-medium">Employee Feedback</h2>
         <div className="flex gap-2">
@@ -24,7 +24,7 @@ export function AreaChartComponent({ data }) {
           </button>
         </div>
       </div>
-      <ResponsiveContainer width="100%" height={200}>
+      <ResponsiveContainer width="100%" height={240}>
         <AreaChart data={data}>
           <CartesianGrid strokeDasharray="3 3" vertical={false} />
           <XAxis dataKey="week" />
