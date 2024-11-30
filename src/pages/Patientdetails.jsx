@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Sidebar } from "../component/Sidebar";
+import { ArrowLeft } from "lucide-react";
 
 export default function PatientDetails() {
   const navigate = useNavigate();
@@ -20,17 +21,14 @@ export default function PatientDetails() {
   const previousVisits = Array(10).fill("Routine Checkup - 15th Oct 2024");
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
-      <Sidebar />
-      <main className="flex-1 pl-[150px]">
+      <main className="flex-1 pl-[30px]">
         <div className="container mx-auto p-6">
           {/* Header */}
           <div className="flex items-center gap-4 mb-8">
-            <button 
-              onClick={() => navigate('/')}
-              className="p-2 bg-gray-200 hover:bg-gray-300 rounded-full"
-            >
-              <span className="h-5 w-5">&larr;</span>
+          <button 
+          onClick={()=>navigate('/')}
+          className="p-2 hover:bg-gray-100 rounded-full">
+              <ArrowLeft className="h-5 w-5" />
             </button>
             <div className="h-12 w-12 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 text-xl font-bold">
               RK
@@ -97,6 +95,5 @@ export default function PatientDetails() {
           </div>
         </div>
       </main>
-    </div>
   );
 }

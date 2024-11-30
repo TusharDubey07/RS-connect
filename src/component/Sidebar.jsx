@@ -1,5 +1,5 @@
 import React from "react";
-import { Users, ClipboardList, BarChart } from "lucide-react";
+import { Users, ClipboardList, BarChart, LogOut } from "lucide-react"; // Add LogOut import
 import { useNavigate, useLocation } from "react-router-dom";
 
 const menuItems = [
@@ -7,25 +7,37 @@ const menuItems = [
     icon: Users,
     label: "Patients",
     path: "/",
+    matchPaths: ["/", "/patient-details"]
   },
   {
     icon: ClipboardList,
     label: "Staff",
     path: "/staff",
+    matchPaths: ["/staff", "/staff-details"]
   },
   {
     icon: BarChart,
     label: "Analysis",
     path: "/analytics",
+    matchPaths: ["/analytics"]
   },
 ];
 
-export function Sidebar() {
+export function Sidebar({ setIsAuthenticated }) { // Add setIsAuthenticated prop
   const navigate = useNavigate();
   const location = useLocation();
 
   const handleNavigation = (path) => {
     navigate(path);
+  };
+
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+    navigate('/auth');
+  };
+
+  const isActive = (item) => {
+    return item.matchPaths.includes(location.pathname);
   };
 
   return (
@@ -49,18 +61,18 @@ export function Sidebar() {
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  backgroundColor: location.pathname === item.path ? "#10B981" : "transparent",
-                  color: location.pathname === item.path ? "white" : "rgba(255, 255, 255, 0.6)",
+                  backgroundColor: isActive(item) ? "#10B981" : "transparent",
+                  color: isActive(item) ? "white" : "rgba(255, 255, 255, 0.6)",
                   border: "none",
                   cursor: "pointer",
                   transition: "background-color 0.2s, color 0.2s",
                 }}
                 onMouseOver={(e) =>
-                  location.pathname !== item.path &&
+                  !isActive(item) &&
                   (e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.1)")
                 }
                 onMouseOut={(e) =>
-                  location.pathname !== item.path && 
+                  !isActive(item) && 
                   (e.currentTarget.style.backgroundColor = "transparent")
                 }
               >
@@ -69,7 +81,7 @@ export function Sidebar() {
               <span style={{ 
                 fontSize: "12px", 
                 fontWeight: "500",
-                color: location.pathname === item.path ? "white" : "rgba(255, 255, 255, 0.6)",
+                color: isActive(item) ? "white" : "rgba(255, 255, 255, 0.6)",
               }}>
                 {item.label}
               </span>
@@ -79,7 +91,7 @@ export function Sidebar() {
       </div>
 
       {/* Sidebar Footer */}
-      <div style={{ padding: "8px", marginTop: "auto", display: "flex", justifyContent: "center" }}>
+      <div style={{ padding: "8px", marginBottom: "16px", display: "flex", flexDirection: "column", alignItems: "center", gap: "16px" }}>
         <div
           style={{
             width: "65px",
@@ -95,6 +107,32 @@ export function Sidebar() {
         >
           <img src="/images/sidebar.png?height=48&width=48" alt="Avatar" style={{ width: "100%", height: "100%" }} />
         </div>
+
+        {/* Logout Button */}
+        <button
+          onClick={handleLogout}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
+            padding: "8px 16px",
+            backgroundColor: "transparent",
+            border: "1px solid rgba(255, 255, 255, 0.2)",
+            borderRadius: "8px",
+            color: "rgba(255, 255, 255, 0.8)",
+            cursor: "pointer",
+            transition: "all 0.2s",
+          }}
+          onMouseOver={(e) => {
+            e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.1)";
+          }}
+          onMouseOut={(e) => {
+            e.currentTarget.style.backgroundColor = "transparent";
+          }}
+        >
+          <LogOut size={16} />
+          <span style={{ fontSize: "12px" }}>Logout</span>
+        </button>
       </div>
     </div>
   );

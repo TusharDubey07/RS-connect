@@ -1,8 +1,6 @@
 
 import React, { useState } from "react";
 import { Search, Users, Calendar, UserMinus, CheckSquare } from "lucide-react";
-import { VscSettings } from "react-icons/vsc";
-import { Sidebar } from "../component/Sidebar"; 
 import { StatusCard } from "../component/Statuscard"; 
 import { PatientList } from "../component/PatientList"; 
 import { StatsCard } from "../component/Statscard";
@@ -29,9 +27,7 @@ export default function Patient() {
   ];
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
-      <Sidebar />
-      <main className="flex-1 pl-[150px]">
+      <main className="flex-1 pl-[30px]">
         <div className="container mx-auto p-6 space-y-6">
           {/* Search */}
           <div className="flex justify-center">
@@ -165,6 +161,5 @@ export default function Patient() {
           </div>
         </div>
       </main>
-    </div>
   );
 }
