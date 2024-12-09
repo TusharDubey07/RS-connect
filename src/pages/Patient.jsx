@@ -1,32 +1,47 @@
-
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Search, Users, Calendar, UserMinus, CheckSquare } from "lucide-react";
 import { StatusCard } from "../component/Statuscard"; 
 import { PatientList } from "../component/PatientList"; 
 import { StatsCard } from "../component/Statscard";
+import useLoadingStore from '../stores/loadingStore';
+import useDashboardStore from '../stores/dashboardStore';
 
 export default function Patient() {
   const [showCalendar, setShowCalendar] = useState(false);
-  
+  const { setIsLoading } = useLoadingStore();
+  const { stats, fetchDashboardStats } = useDashboardStore();
+
+  useEffect(() => {
+    const loadStats = async () => {
+      try {
+        await fetchDashboardStats();
+      } catch (error) {
+        console.error('Error loading stats:', error);
+      }
+    };
+    loadStats();
+  }, [fetchDashboardStats]);
+
   const statusCards = [
     {
       icon: Users,
-      label: "New Patients",
-      value: "16",
+      label: "Total Patients",
+      value: stats.totalUsers.toString(),
     },
     {
       icon: CheckSquare,
       label: "Total Appointments",
-      value: "200",
+      value: stats.totalAppointments.toString(),
     },
     {
-      icon: CheckSquare,
+      icon: UserMinus,
       label: "Inactive Patients",
       value: "140",
     },
   ];
 
   return (
+     <div className="content-loaded">
       <main className="flex-1 pl-[30px]">
         <div className="container mx-auto p-6 space-y-6">
           {/* Search */}
@@ -161,5 +176,6 @@ export default function Patient() {
           </div>
         </div>
       </main>
+      </div>
   );
 }

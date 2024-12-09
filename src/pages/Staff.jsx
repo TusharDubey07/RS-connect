@@ -1,50 +1,60 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Search, Users, Calendar, UserMinus, CheckSquare } from "lucide-react";
-import { VscSettings } from "react-icons/vsc";
-import { Sidebar } from "../component/Sidebar"; 
 import { StatusCard } from "../component/Statuscard"; 
 import { StaffList } from "../component/StaffList"; 
 import { StatsCard } from "../component/Statscard";
-import { useNavigate } from "react-router-dom";
+import useDashboardStore from '../stores/dashboardStore';
 
 export default function Staff() {
   const [showCalendar, setShowCalendar] = useState(false);
-  
+  const { stats, fetchDashboardStats } = useDashboardStore();
+
+  useEffect(() => {
+    const loadStats = async () => {
+      try {
+        await fetchDashboardStats();
+      } catch (error) {
+        console.error('Error loading stats:', error);
+      }
+    };
+    loadStats();
+  }, [fetchDashboardStats]);
+
   const statusCards = [
     {
       icon: Users,
-      label: "New Patients",
-      value: "16",
+      label: "Total Doctors",
+      value: stats.totalDoctors.toString(),
     },
     {
       icon: CheckSquare,
       label: "Total Appointments",
-      value: "200",
+      value: stats.totalAppointments.toString(),
     },
     {
-      icon: CheckSquare,
-      label: "Inactive Patients",
+      icon: UserMinus,
+      label: "Inactive Staff",
       value: "140",
     },
   ];
 
   return (
-      <main className="flex-1 pl-[30px]">
-        <div className="container mx-auto p-6 space-y-6">
-          {/* Search */}
-          <div className="flex justify-center">
-            <div className="max-w-md w-full relative">
-              <input
-                type="text"
-                placeholder="Search"
-                className="w-full p-2 border rounded pl-10"
-                style={{ borderColor: "#54BE87" }}
-              />
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-            </div>
+    <main className="flex-1 pl-[30px]">
+      <div className="container mx-auto p-6 space-y-6">
+        {/* Search */}
+        <div className="flex justify-center">
+          <div className="max-w-md w-full relative">
+            <input
+              type="text"
+              placeholder="Search"
+              className="w-full p-2 border rounded pl-10"
+              style={{ borderColor: "#54BE87" }}
+            />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
           </div>
+        </div>
 
-          {/* Status This Month Box */}
+        {/* Status This Month Box */}
     
         <div className="p-6 bg-white rounded-lg shadow-md border border-emerald-500 w-[922px]">
             <div className="flex flex-col">

@@ -1,6 +1,7 @@
 import React from "react";
 import { Users, ClipboardList, BarChart, LogOut } from "lucide-react"; // Add LogOut import
 import { useNavigate, useLocation } from "react-router-dom";
+import useAuthStore from '../stores/authStore' // Import the auth store
 
 const menuItems = [
   {
@@ -23,17 +24,18 @@ const menuItems = [
   },
 ];
 
-export function Sidebar({ setIsAuthenticated }) { // Add setIsAuthenticated prop
+export function Sidebar() {
   const navigate = useNavigate();
   const location = useLocation();
+  const logout = useAuthStore(state => state.logout); // Get logout function from store
 
   const handleNavigation = (path) => {
     navigate(path);
   };
 
   const handleLogout = () => {
-    setIsAuthenticated(false);
-    navigate('/auth');
+    logout(); // Call logout function from store
+    navigate('/auth'); // Navigate to auth page
   };
 
   const isActive = (item) => {
@@ -109,30 +111,33 @@ export function Sidebar({ setIsAuthenticated }) { // Add setIsAuthenticated prop
         </div>
 
         {/* Logout Button */}
-        <button
-          onClick={handleLogout}
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "8px",
-            padding: "8px 16px",
-            backgroundColor: "transparent",
-            border: "1px solid rgba(255, 255, 255, 0.2)",
-            borderRadius: "8px",
-            color: "rgba(255, 255, 255, 0.8)",
-            cursor: "pointer",
-            transition: "all 0.2s",
-          }}
-          onMouseOver={(e) => {
-            e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.1)";
-          }}
-          onMouseOut={(e) => {
-            e.currentTarget.style.backgroundColor = "transparent";
-          }}
-        >
-          <LogOut size={16} />
-          <span style={{ fontSize: "12px" }}>Logout</span>
-        </button>
+        <div style={{ padding: "8px", marginBottom: "16px" }}>
+          <button
+            onClick={handleLogout}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
+              padding: "8px 16px",
+              backgroundColor: "transparent",
+              border: "1px solid rgba(255, 255, 255, 0.2)",
+              borderRadius: "8px",
+              color: "rgba(255, 255, 255, 0.8)",
+              cursor: "pointer",
+              transition: "all 0.2s",
+              width: "100%",
+            }}
+            onMouseOver={(e) => {
+              e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.1)";
+            }}
+            onMouseOut={(e) => {
+              e.currentTarget.style.backgroundColor = "transparent";
+            }}
+          >
+            <LogOut size={16} />
+            <span style={{ fontSize: "12px" }}>Logout</span>
+          </button>
+        </div>
       </div>
     </div>
   );
