@@ -1,12 +1,22 @@
-import React, { useEffect } from 'react'
+import React, { useEffect,useState } from 'react'
 import { ArrowLeft, ChevronLeft, ChevronRight, Bold, Italic, LinkIcon, List, Send } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import useDoctorStore from '../stores/doctorStore';
 import useAppointmentStore from '../stores/appointmentStore';
-import { DayPicker } from 'react-day-picker';
-import 'react-day-picker/dist/style.css';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import '../styles/datepicker.css'
+import AppointmentDetails from './AppointmentDetails';
 
 const Staffdetails = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedAppointment, setSelectedAppointment] = useState(null);
+
+  const handleAppointmentClick = (appointment) => {
+    setSelectedAppointment(appointment);
+    setIsModalOpen(true);
+  };
+
   const navigate = useNavigate();
   const { doctorDetails } = useDoctorStore();
   const { 
@@ -36,11 +46,11 @@ const Staffdetails = () => {
   const getStatusStyle = (status) => {
     switch (status.toLowerCase()) {
       case 'completed':
-        return 'bg-green-100 text-green-600';
+        return 'bg-blue-100 text-blue-600';
       case 'cancelled':
-        return 'bg-red-100 text-red-600';
+        return 'bg-blue-100 text-blue-600';
       case 'pending':
-        return 'bg-yellow-100 text-yellow-600';
+        return 'bg-blue-100 text-blue-600';
       default:
         return 'bg-gray-100 text-gray-600';
     }
@@ -124,33 +134,6 @@ const Staffdetails = () => {
     }
   };
 
-  const calendarClassNames = {
-    root: 'w-[300px] mx-auto',
-    months: 'flex justify-center',
-    month: 'w-full',
-    caption: 'flex justify-between items-center h-10 mb-4',
-    caption_label: 'text-base font-semibold text-gray-900',
-    nav: 'flex gap-1',
-    nav_button: 'h-8 w-8 bg-transparent hover:bg-blue-100 flex items-center justify-center rounded-full transition-colors',
-    nav_button_previous: 'text-gray-600',
-    nav_button_next: 'text-gray-600',
-    table: 'w-full border-collapse space-y-1',
-    thead: 'block mb-2',
-    tbody: 'block',
-    head_row: 'grid grid-cols-7 mb-1',
-    head_cell: 'text-gray-500 font-medium text-center text-sm',
-    row: 'grid grid-cols-7 mt-2',
-    cell: 'text-center text-sm p-0 relative',
-    day: 'h-8 w-8 mx-auto flex items-center justify-center rounded-full hover:bg-blue-100 transition-colors',
-    day_range_start: 'rounded-l-full',
-    day_range_end: 'rounded-r-full',
-    day_selected: 'bg-blue-600 text-white hover:bg-blue-700',
-    day_today: 'bg-gray-100 font-semibold',
-    day_outside: 'text-gray-400',
-    day_disabled: 'text-gray-400',
-    day_hidden: 'invisible',
-  };
-
   return (
     <div className="min-h-screen bg-gray-50 p-4 w-full">
       <div className="grid grid-cols-1 md:grid-cols-12 gap-4 max-w-7xl mx-auto">
@@ -184,45 +167,64 @@ const Staffdetails = () => {
         </div>
 
         {/* Calendar Section */}
-        <div className="md:col-span-5 p-6 bg-white rounded-lg shadow-md">
+        <div className="md:col-span-5 p-6 bg-white rounded-lg shadow-md h-auto">
           <h2 className="text-xl font-semibold text-center mb-6 text-gray-800">Appointments</h2>
           
-          <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg shadow-md p-6">
-            <div className="flex justify-center">
-              <DayPicker
-                mode="single"
+          <div className="w-full max-w-md mx-auto"> 
+          <div className="bg-blue-50 rounded-xl shadow-lg p-6">
+              <DatePicker
                 selected={selectedDate}
-                onSelect={setSelectedDate}
-                classNames={calendarClassNames}
-                modifiers={{
-                  hasAppointment: (date) => 
-                    appointments.some(apt => apt.date.toDateString() === date.toDateString())
-                }}
-                modifiersStyles={{
-                  hasAppointment: {
-                    backgroundColor: '#dbeafe',
-                    color: '#1e40af',
-                    fontWeight: '500'
+                onChange={date => setSelectedDate(date)}
+                inline
+                highlightDates={[
+                  {
+                    "react-datepicker__day--highlighted-custom-1": appointments.filter(apt => apt.status === 'completed').map(apt => new Date(apt.date))
+                  },
+                  {
+                    "react-datepicker__day--highlighted-custom-2": appointments.filter(apt => apt.status === 'pending').map(apt => new Date(apt.date))
+                  },
+                  {
+                    "react-datepicker__day--highlighted-custom-3": appointments.filter(apt => apt.status === 'cancelled').map(apt => new Date(apt.date))
                   }
+                ]}
+                dayClassName={date => {
+                  const appointment = appointments.find(apt => new Date(apt.date).toDateString() === date.toDateString());
+                  if (appointment) {
+                    switch (appointment.status) {
+                      case 'completed':
+                        return 'bg-blue-100 text-blue-600';
+                      case 'pending':
+                        return 'bg-blue-100 text-blue-600';
+                      case 'cancelled':
+                        return 'bg-blue-100 text-blue-600';
+                      default:
+                        return '';
+                    }
+                  }
+                  return '';
                 }}
-                showOutsideDays={true}
-                weekStartsOn={0}
-                formatters={{
-                  formatWeekdayName: (date) => ['S', 'M', 'T', 'W', 'T', 'F', 'S'][date.getDay()]
-                }}
-                styles={{
-                  table: { width: '100%' },
-                  head_row: { display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)' },
-                  row: { display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)' },
-                  cell: { textAlign: 'center' },
-                }}
+                className="w-full"
+                calendarClassName="bg-blue-50 rounded-lg shadow-md p-4"
+                renderCustomHeader={({ date, decreaseMonth, increaseMonth }) => (
+                  <div className="flex justify-between items-center mb-2">
+                    <button onClick={decreaseMonth} className="text-gray-600 hover:text-gray-800">
+                      &lt;
+                    </button>
+                    <span className="text-lg font-medium text-gray-800">
+                      {date.toLocaleString('default', { month: 'long' })}
+                    </span>
+                    <button onClick={increaseMonth} className="text-gray-600 hover:text-gray-800">
+                      &gt;
+                    </button>
+                  </div>
+                )}
               />
             </div>
           </div>
 
-          <div className="space-y-4 mt-8">
+          <div className="mt-4 space-y-4">
             {selectedDate && (
-              <h3 className="text-sm font-medium text-gray-600 mb-4">
+              <h3 className="text-sm font-medium text-gray-600 mb-2">
                 Appointments for {selectedDate.toLocaleDateString('en-US', { 
                   weekday: 'long', 
                   year: 'numeric', 
@@ -234,12 +236,13 @@ const Staffdetails = () => {
             
             {filteredAppointments.map((appointment, index) => (
               <div 
-                key={index} 
-                className="flex items-center justify-between border-l-4 border-blue-500 pl-4 py-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 ease-in-out"
-              >
+                  key={index} 
+                  className="flex items-center justify-between border-l-4 border-blue-500 pl-4 py-2 bg-white rounded-lg shadow-sm cursor-pointer hover:bg-gray-50" // Added cursor-pointer and hover
+                  onClick={() => handleAppointmentClick(appointment)}
+                   >
                 <div className="flex-1">
                   <div className="flex items-center gap-3">
-                    <div className="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
+                    <div className="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center">
                       <span className="text-blue-600 font-medium">
                         {appointment.patientName.charAt(0)}
                       </span>
@@ -269,19 +272,20 @@ const Staffdetails = () => {
             ))}
             
             {selectedDate && filteredAppointments.length === 0 && (
-              <div className="text-center py-8">
-                <div className="text-gray-400 text-4xl mb-3">📅</div>
+              <div className="text-center py-4">
+                <div className="text-gray-400 text-2xl mb-2">📅</div>
                 <p className="text-gray-500 font-medium">No appointments scheduled</p>
                 <p className="text-sm text-gray-400 mt-1">Select another date to view appointments</p>
               </div>
             )}
           </div>
+          
         </div>
 
         {/* Chat Section */}
-        <div className="md:col-span-4 p-6 bg-white rounded-lg shadow w-[500px]">
+        <div className="md:col-span-4 p-3 bg-white rounded-lg shadow h-[700px]">
           <div className="flex flex-col h-full">
-            <div className="flex-1 space-y-4">
+            <div className="flex-1 overflow-y-auto space-y-4 p-4">
               {messages.map((message, index) => (
                 <div 
                   key={index} 
@@ -309,7 +313,7 @@ const Staffdetails = () => {
               ))}
             </div>
 
-            <div className="mt-4">
+            <div className="mt-auto p-4 border-t">
               <textarea 
                 placeholder="Type Here" 
                 className="w-full min-h-[100px] mb-2 p-2 border rounded-lg resize-none"
@@ -337,8 +341,19 @@ const Staffdetails = () => {
           </div>
         </div>
       </div>
+      {isModalOpen && (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div className="relative w-full max-w-4xl">
+          <AppointmentDetails 
+            appointment={selectedAppointment}
+            onClose={() => setIsModalOpen(false)}
+          />
+        </div>
+      </div>
+    )}
     </div>
   );
 }
 
 export default Staffdetails;
+

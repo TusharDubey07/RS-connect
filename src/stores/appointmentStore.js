@@ -26,7 +26,13 @@ const useAppointmentStore = create((set) => ({
         startTime: apt.scheduledTime.startTime,
         endTime: apt.scheduledTime.endTime,
         status: apt.status,
-        type: apt.type
+        type: apt.type,
+        clinic: apt.clinic,
+        medicalDetails: apt.medicalDetails,
+        feedback: apt.feedback,
+        notes: apt.notes,
+        onlineMeeting: apt.onlineMeeting,
+        payment: apt.payment
       }));
 
       set({ appointments: formattedAppointments });
